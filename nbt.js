@@ -7,8 +7,8 @@ var hasGzipHeader = function(data){
   return result;
 };
 
-var ProtoDef=require("protodef").ProtoDef;
-var proto=new ProtoDef();
+var ProtoDef = require("protodef").ProtoDef;
+var proto = new ProtoDef();
 
 proto.addType("compound",require("./compound").compound);
 proto.addTypes(require("./nbt.json"));
@@ -40,13 +40,15 @@ function simplify(data)
   function transform(value,type)
   {
     if(type=="compound") {
-      return Object.keys(value).reduce((acc,key) => {
+      return Object.keys(value).reduce(function (acc,key) {
         acc[key]=simplify(value[key]);
         return acc;
       },{});
     }
     if(type=="list") {
-      return value.value.map(v => transform(v,value.type));
+      return value.value.map(function (v) {
+        transform(v,value.type)
+      });
     }
     return value;
   }
